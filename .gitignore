@@ -1,0 +1,10 @@
+bin/
+obj/
+*.exe
+*.o
+*.dat
+*.bak
+*.tmp
+products_report.csv
+transactions_report.csv
+

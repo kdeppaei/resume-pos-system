@@ -1,0 +1,16 @@
+name: C build and tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build application
+        run: make
+      - name: Run logic tests
+        run: make test
+
