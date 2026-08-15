@@ -4,6 +4,10 @@
 
 這是一個使用 **C 語言**開發的模組化 POS 與庫存管理系統。V3 將原本約 1,500 行的單一 `main.c` 重構成多個 `.c/.h` 模組，並加入自動化邏輯測試與 GitHub Actions 持續整合。
 
+![GitHub Actions build and logic-test output](docs/images/ci-terminal.svg)
+
+_上圖重現最新 GitHub Actions 驗證輸出：GNU90 編譯成功，並顯示 `All POS logic tests passed.`_
+
 ## 專案重點
 
 - Dev-C++／舊版 GCC 相容，採用 GNU90 寫法
@@ -16,6 +20,31 @@
 - 交易紀錄使用固定容量循環緩衝區，控制記憶體上限
 - 可匯出商品與交易 CSV 報表
 - GitHub Actions 會在每次推送與 Pull Request 自動建置並執行測試
+
+## 架構與資料安全邊界
+
+```mermaid
+flowchart LR
+    CLI["main.c / CLI"] --> INPUT["input: 驗證與解析"]
+    CLI --> CATALOG["catalog: 商品生命週期"]
+    CLI --> CHECKOUT["checkout: 購物車與結帳"]
+    CLI --> REPORTS["reports: 摘要與 CSV"]
+    INPUT --> DB["Database * 明確狀態"]
+    CATALOG --> DB
+    CHECKOUT --> SNAPSHOT["交易前快照"]
+    SNAPSHOT --> DB
+    DB --> STORAGE["storage: temporary + backup"]
+    DB --> TX["transaction: 固定容量循環緩衝區"]
+    REPORTS --> DB
+```
+
+## 60 秒面試說法
+
+- **問題：** 約 1,500 行單檔程式混合輸入、商品、交易、儲存與報表責任，修改一處容易影響其他流程。
+- **決策：** 依責任拆成八個 `.c/.h` 模組，透過 `Database *` 傳遞狀態，同時保留 GNU90／Dev-C++ 相容性。
+- **正確性：** 結帳前建立完整快照，寫檔失敗時回滾；主資料採 temporary file + backup，商品用軟刪除保留歷史收據語意。
+- **資料結構：** 自行實作 `O(n log n)` Merge Sort，交易紀錄使用固定容量循環緩衝區，讓時間與記憶體上限可說明。
+- **證據：** CI 在 Ubuntu 上以 `-Wall -Wextra` 編譯，並驗證促銷邊界、搜尋、排序、緩衝區覆寫與收據快照等五類行為。
 
 ## 專案結構
 
