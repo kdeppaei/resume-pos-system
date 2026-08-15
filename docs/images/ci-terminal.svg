@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Resume POS build and test output</title>
+  <desc id="desc">A terminal-style rendering of the verified GitHub Actions build and test commands.</desc>
+  <rect width="1280" height="640" rx="24" fill="#0d1117"/>
+  <rect x="28" y="28" width="1224" height="584" rx="16" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+  <circle cx="62" cy="62" r="9" fill="#ff7b72"/>
+  <circle cx="92" cy="62" r="9" fill="#d29922"/>
+  <circle cx="122" cy="62" r="9" fill="#3fb950"/>
+  <text x="164" y="70" fill="#8b949e" font-family="Consolas, Menlo, monospace" font-size="22">GitHub Actions · ubuntu-24.04 · C build and tests</text>
+  <g fill="#c9d1d9" font-family="Consolas, Menlo, monospace" font-size="23">
+    <text x="62" y="130" fill="#58a6ff">$ make</text>
+    <text x="62" y="172">gcc -std=gnu90 -Wall -Wextra -Iinclude \\</text>
+    <text x="92" y="210">src/main.c src/input.c src/core.c src/storage.c \\</text>
+    <text x="92" y="248">src/catalog.c src/transaction.c src/checkout.c src/reports.c \\</text>
+    <text x="92" y="286">-o resume_pos</text>
+    <text x="62" y="346" fill="#58a6ff">$ make test</text>
+    <text x="62" y="388">gcc -std=gnu90 -Wall -Wextra -Iinclude tests/test_logic.c \\</text>
+    <text x="92" y="426">src/input.c src/core.c src/storage.c src/transaction.c -o pos_tests</text>
+    <text x="62" y="484" fill="#58a6ff">$ ./pos_tests</text>
+    <text x="62" y="530" fill="#3fb950" font-weight="700">All POS logic tests passed.</text>
+  </g>
+  <text x="62" y="580" fill="#8b949e" font-family="Consolas, Menlo, monospace" font-size="18">Verified run: GitHub Actions · 2026-08-15</text>
+</svg>
